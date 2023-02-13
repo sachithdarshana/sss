@@ -1,0 +1,133 @@
+Use basic commands
+docker info
+docker version
+docker help
+docker images
+docker ps
+docker ps -a
+docker inspect container_name
+docker stop container_name
+docker logs container_name
+docker load -i nginx 
+
+
+
+
+Dockerfile
+FROM ubuntu
+MAINTAINER seusl
+RUN apt-get update
+RUN apt-get install -y nginx
+ADD index.html /var/www/html/index.nginx-debian.html
+COPY . /var/www/html
+CMD ["/usr/sbin/nginx","-g","daemon off;"]
+
+
+sudo docker build -t newapp:latest .
+sudo docker run -p 8080:80 newapp 
+
+
+#Create a Dockerfile with apache server
+FROM centos:7
+MAINTAINER southeastern_university
+RUN yum -y install httpd
+EXPOSE 80
+CMD ["/usr/sbin/httpd", "-D", "FOREGROUND"
+
+
+
+
+docker-compose.yml
+
+version: '3'
+
+services:
+  wordpress:
+    image: wordpress
+    ports:
+      - "8000:80"
+    depends_on:
+      - db
+    volumes:
+      - wordpress_files:/var/www/html
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: my_wp
+    restart: always
+
+  db:
+    image: mysql
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: mydb
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: my_wp
+    restart: always
+
+volumes:
+  wordpress_files:
+  db_data:
+
+sudo docker-compose up -d
+localhost:8000
+
+
+
+
+flaskapp.py
+
+from flask import Flask
+app = Flask(__name__)
+@app.route('/')
+def counter():
+	return("This is FlaSK App Hello world")
+
+
+
+Dockerfile
+
+FROM python
+RUN mkdir /python
+WORKDIR /python
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+COPY . .
+CMD flask run --host=0.0.0.0 --port=5000
+
+
+
+requirements.txt
+
+Flask
+
+
+
+sudo docker build -t pythonflaskapp:latest .
+
+sudo docker run -p 5000:80 pythonflaskapp
+
+
+
+
+
+python.py
+
+num1 = 1.5
+num2 = 6.3
+sum = num1 + num2
+print('The sum of {0} and {1} is {2}'.format(num1, num2, sum))
+
+Dockerfile
+
+FROM python
+WORKDIR /app
+COPY . /app
+CMD ["python", "python.py"]
+
+sudo docker build -t 1123 .
+sudo docker run 1123
+
+
